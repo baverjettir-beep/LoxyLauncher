@@ -97,6 +97,28 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
     private QuickSettingSideDialog mQuickSettingSideDialog;
 
+    /** Asks the system for the display mode with the highest refresh rate at the current resolution. */
+    private void requestHighestRefreshRate() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        try {
+            android.view.Display display = getWindowManager().getDefaultDisplay();
+            android.view.Display.Mode current = display.getMode();
+            android.view.Display.Mode best = current;
+            for (android.view.Display.Mode mode : display.getSupportedModes()) {
+                if (mode.getPhysicalWidth() == current.getPhysicalWidth()
+                        && mode.getPhysicalHeight() == current.getPhysicalHeight()
+                        && mode.getRefreshRate() > best.getRefreshRate()) {
+                    best = mode;
+                }
+            }
+            android.view.WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.preferredDisplayModeId = best.getModeId();
+            getWindow().setAttributes(params);
+        } catch (Throwable t) {
+            android.util.Log.w("MainActivity", "Could not request high refresh rate", t);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState) ;
@@ -123,6 +145,9 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             getWindow().setSustainedPerformanceMode(PREF_SUSTAINED_PERFORMANCE);
+
+        net.kdt.pojavlaunch.utils.MusicPlayerManager.INSTANCE.pause();
+        if (LauncherPreferences.PREF_FPS_BOOST) requestHighestRefreshRate();
 
         MCOptionUtils.MCOptionListener optionListener = MCOptionUtils::getMcScale;
         MCOptionUtils.addMCOptionListener(optionListener);

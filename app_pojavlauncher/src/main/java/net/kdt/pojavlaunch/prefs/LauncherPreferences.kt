@@ -112,6 +112,9 @@ object LauncherPreferences {
     var PREF_FORCE_VSYNC = false
 
     @JvmField
+    var PREF_FPS_BOOST = true
+
+    @JvmField
     var PREF_USE_ANGLE = false
 
     @JvmField
@@ -321,6 +324,7 @@ object LauncherPreferences {
         PREF_GYRO_INVERT_X = prefs.getBoolean("gyroInvertX", false)
         PREF_GYRO_INVERT_Y = prefs.getBoolean("gyroInvertY", false)
         PREF_FORCE_VSYNC = prefs.getBoolean("force_vsync", isDevicePowerful)
+        PREF_FPS_BOOST = prefs.getBoolean("fps_boost", true)
         PREF_USE_ANGLE = prefs.getBoolean("use_angle", false)
         PREF_BUTTON_ALL_CAPS = prefs.getBoolean("buttonAllCaps", true)
         PREF_DUMP_SHADERS = prefs.getBoolean("dump_shaders", false)

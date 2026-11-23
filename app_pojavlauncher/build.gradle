@@ -61,7 +61,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "net.ashmeet.hyperlauncher"
+        applicationId "com.loxy.launcher"
         minSdkVersion 24
         targetSdkVersion 35
         versionCode getDateSeconds()
@@ -90,16 +90,16 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            resValue 'string', 'application_package', 'net.ashmeet.hyperlauncher.debug'
-            resValue 'string', 'storageProviderAuthorities', 'net.ashmeet.hyperlauncher.scoped.gamefolder.debug'
+            resValue 'string', 'application_package', 'com.loxy.launcher.debug'
+            resValue 'string', 'storageProviderAuthorities', 'com.loxy.launcher.scoped.gamefolder.debug'
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            resValue 'string', 'storageProviderAuthorities', 'net.ashmeet.hyperlauncher.scoped.gamefolder'
-            resValue 'string', 'application_package', 'net.ashmeet.hyperlauncher'
+            resValue 'string', 'storageProviderAuthorities', 'com.loxy.launcher.scoped.gamefolder'
+            resValue 'string', 'application_package', 'com.loxy.launcher'
         }
         gplay {
             initWith release
@@ -109,8 +109,8 @@ android {
             initWith release
             signingConfig signingConfigs.release
             applicationIdSuffix '.pub'
-            resValue 'string', 'storageProviderAuthorities', 'net.ashmeet.hyperlauncher.pub.scoped.gamefolder'
-            resValue 'string', 'application_package', 'net.ashmeet.hyperlauncher.pub'
+            resValue 'string', 'storageProviderAuthorities', 'com.loxy.launcher.pub.scoped.gamefolder'
+            resValue 'string', 'application_package', 'com.loxy.launcher.pub'
         }
     }
 

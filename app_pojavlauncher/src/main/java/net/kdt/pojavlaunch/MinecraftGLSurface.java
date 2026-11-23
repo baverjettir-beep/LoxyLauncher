@@ -357,6 +357,11 @@ public class MinecraftGLSurface extends View implements GrabListener, GamepadEna
             } catch (Throwable ignored) {}
         }
 
+        if (LauncherPreferences.PREF_FPS_BOOST) {
+            // 260 is Minecraft's "Unlimited" value for the max framerate slider
+            MCOptionUtils.set("maxFps", "260");
+            MCOptionUtils.set("enableVsync", "false");
+        }
         MCOptionUtils.set("fullscreen", "off");
         MCOptionUtils.set("overrideWidth", String.valueOf(windowWidth));
         MCOptionUtils.set("overrideHeight", String.valueOf(windowHeight));

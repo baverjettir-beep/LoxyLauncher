@@ -1087,6 +1087,19 @@ fun VideoSettings() {
                     }
                 )
 
+                var fpsBoost by remember { mutableStateOf(LauncherPreferences.PREF_FPS_BOOST) }
+                PreferenceSwitch(
+                    title = stringResource(R.string.preference_fps_boost_title),
+                    summary = stringResource(R.string.preference_fps_boost_description),
+                    imageVector = Icons.Default.Speed,
+                    checked = fpsBoost,
+                    onCheckedChange = {
+                        fpsBoost = it
+                        LauncherPreferences.PREF_FPS_BOOST = it
+                        LauncherPreferences.DEFAULT_PREF?.edit { putBoolean("fps_boost", it) }
+                    }
+                )
+
                 var forceVsync by remember { mutableStateOf(LauncherPreferences.PREF_FORCE_VSYNC) }
                 PreferenceSwitch(
                     title = stringResource(R.string.preference_force_vsync_title),
@@ -1853,7 +1866,7 @@ fun MiscSettings() {
             PreferenceGroup(title = "Launcher Updates") {
                 PreferenceItem(
                     title = "Check for Updates",
-                    summary = "Manually check if a newer version of Hyper Launcher is available",
+                    summary = "Manually check if a newer version of LoxyLauncher is available",
                     imageVector = Icons.Default.Bolt,
                     onClick = {
                         coroutineScope.launch {

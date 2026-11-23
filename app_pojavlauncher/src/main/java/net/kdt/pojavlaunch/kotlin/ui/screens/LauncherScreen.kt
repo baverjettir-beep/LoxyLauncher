@@ -83,6 +83,7 @@ import net.kdt.pojavlaunch.extra.ExtraCore
 import net.kdt.pojavlaunch.extra.ExtraListener
 import net.kdt.pojavlaunch.fragments.*
 import net.kdt.pojavlaunch.prefs.LauncherPreferences
+import net.kdt.pojavlaunch.utils.MusicPlayerManager
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper
 import net.kdt.pojavlaunch.progresskeeper.ProgressListener
 import net.kdt.pojavlaunch.ui.theme.PojavTheme
@@ -604,15 +605,18 @@ fun TopBar(
             8 -> "About"
             else -> {
                 when (currentFragmentTag) {
-                    MainMenuFragment.TAG -> "HyperLauncher"
+                    MainMenuFragment.TAG -> "LoxyLauncher"
                     "FileSelectorFragment" -> "Select File"
                     "InstanceEditorFragment" -> "Edit Instance"
-                    null -> "HyperLauncher"
+                    null -> "LoxyLauncher"
                     else -> currentFragmentTag.substringAfterLast('.').replace("Fragment", "")
                 }
             }
         }
     }
+
+    var showMusicDialog by remember { mutableStateOf(false) }
+    if (showMusicDialog) MusicPlayerDialog(onDismiss = { showMusicDialog = false })
 
     Surface(
         modifier = Modifier.fillMaxWidth().height(topBarHeight),
@@ -658,14 +662,14 @@ fun TopBar(
                     }
 
                     Text(
-                        text = "HyperLauncher",
+                        text = "LoxyLauncher",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.ExtraBold,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.clickable(onClick = onAboutClick)
                     )
 
-                    if (isAnyScreenOpen && title != "HyperLauncher") {
+                    if (isAnyScreenOpen && title != "LoxyLauncher") {
                         Text(
                             text = " — ",
                             modifier = Modifier.padding(horizontal = 4.dp),
@@ -715,6 +719,14 @@ fun TopBar(
                             )
                         }
                     }
+
+                    TopBarButton(
+                        onClick = { showMusicDialog = true },
+                        isSelected = MusicPlayerManager.isPlaying,
+                        imageVector = Icons.Default.MusicNote,
+                        label = "Music",
+                        topBarHeight = topBarHeight
+                    )
 
                     TopBarButton(
                         onClick = { onCategoryClick(1) },
@@ -1668,7 +1680,7 @@ fun AboutScreen() {
             )
 
             Text(
-                text = "HyperLauncher",
+                text = "LoxyLauncher",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
@@ -1741,7 +1753,7 @@ fun AboutScreen() {
                         text = """1. This app does not send any sensitive data, and uses network only for downloading game resources, mods or other content.
 2. This app does not collect any sensitive data while you are running the game.
 3. Some sensitive data is stored in crash reports after the game crashes, but it's not shared to the developer or any third parties
-4. Hyper Launcher developers reserve the right to update this privacy policy without prior notification.""",
+4. LoxyLauncher developers reserve the right to update this privacy policy without prior notification.""",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         lineHeight = 20.sp
