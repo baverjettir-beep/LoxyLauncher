@@ -1,0 +1,37 @@
+name: Apply Loxy and Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Apply Loxy patch
+        run: |
+          if git apply --check LoxyLauncher-all.patch 2>/dev/null; then
+            git apply LoxyLauncher-all.patch
+            sed -i -E '64s/net\.ashmeet\.hyperlauncher/com.loxy.launcher/;93,94s/net\.ashmeet\.hyperlauncher/com.loxy.launcher/;101,102s/net\.ashmeet\.hyperlauncher/com.loxy.launcher/;112,113s/net\.ashmeet\.hyperlauncher/com.loxy.launcher/' app_pojavlauncher/build.gradle
+            rm LoxyLauncher-all.patch
+            git config user.name "loxy-bot"
+            git config user.email "loxy-bot@users.noreply.github.com"
+            git add -A
+            git commit -m "Apply LoxyLauncher changes"
+            git push
+          else
+            echo "::error::Patch does not apply (missing file or already applied)"
+            exit 1
+          fi
+
+      - name: Start APK build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run android.yml --ref "${{ github.ref_name }}"
